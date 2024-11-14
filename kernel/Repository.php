@@ -41,7 +41,8 @@ class Repository {
         return $this->request->fetchAll(\PDO::FETCH_CLASS, $this->model);
     }
 
-    public function save($entity) {
+    public function insert($entity) {
+        var_dump(get_object_vars($entity));
         $sql = 'insert into '.$this->table.' values (NULL, )';
     }
 }
