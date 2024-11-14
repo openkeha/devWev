@@ -1,0 +1,11 @@
+{
+    "name": "keha/mvc",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Keha\\Mvc\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
