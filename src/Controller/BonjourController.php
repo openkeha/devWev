@@ -9,8 +9,9 @@ class BonjourController extends AbstractController {
     public function index()
     {
         echo 'j\'appelle la méthode render de l\'AbstractContrôleur';
-        $this->render('index.php',[
-            'var'=>'bonjour'
+        $this->render('/Pages/bonjour.php',[
+            'bonjour'=>'bonjour',
+            'texte' => 'Vous commencez à comprendre que le développement est difficile!!!!'
         ]);
     }
 }

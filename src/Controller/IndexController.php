@@ -14,8 +14,8 @@ class IndexController extends AbstractController {
         // Récupère les données du modèle
         $datas = $model->getModel();
         // affiche la vue
-        $this->render('index.php',[
-            'var'=>$datas
+        $this->render('/Pages/index.php',[
+            'values'=>$datas
         ]);
     }
 }
