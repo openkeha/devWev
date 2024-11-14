@@ -3,8 +3,8 @@
 namespace Keha\Mvc\Model;
 
 class Notes {
-    private ?int $id;
-    private ?float $note;
+    private ?int $id = null;
+    private ?float $note = null;
 
     /**
      * Get the value of id

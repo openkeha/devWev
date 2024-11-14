@@ -3,9 +3,9 @@
 namespace Keha\Mvc\Model;
 
 class Classe {
-    private ?int $id;
-    private ?string $name;
-    private ?float $coef;
+    private ?int $id = null;
+    private ?string $name = null;
+    private ?float $coef = null;
 
     /**
      * Get the value of id
@@ -57,5 +57,13 @@ class Classe {
         $this->coef = $coef;
 
         return $this;
+    }
+
+    /**
+     * Get the value of name
+     */ 
+    public function getName()
+    {
+        return $this->name;
     }
 }
