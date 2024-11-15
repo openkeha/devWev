@@ -8,13 +8,18 @@ use Keha\Kernel\Security;
 class ConnectController extends AbstractController {
 
     public function index() {
+        $security = new Security();
+        if ($security->isConnected()) {
+            $this->redirect('index.php?controller=bonjour');
+        }
+
         if(isset($_POST['submit'])) {
             $username = $_POST['username'];
             $password = $_POST['password'];
             $security = new Security;
             $connect = $security->connect($username, $password);
             if ($connect === true) {
-                echo 'Bien connecté';
+                $this->redirect('index.php?controller=bonjour');
             } else {
                 echo $connect;
             }

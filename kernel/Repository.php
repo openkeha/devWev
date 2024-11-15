@@ -27,51 +27,50 @@ class Repository {
     /*
     * Récupère un objet en fonction de l'id fournit en paramètre
     */
-    public function getById(int $id): array
+    public function getById(int $id): ?object
     {
         $this->sql = 'select * from '.$this->table.' where id = ?';
         $this->prepare([$id]);
-        return $this->flush();
+        return $this->getResult(false);
     }
 
     /*
     * Récupère un tableau d'objets depuis la BDD
     */
-    public function getAll(): array
+    public function getAll(): ?array
     {
         $this->sql = 'select * from '.$this->table;
         $this->prepare();
-        return $this->flush();
+        return $this->getResult();
     }
 
     /*
     * Récupère les enregistrements en fonction des paramètres passés en arguments
-    *
+    * 
     */
     public function getByAttribute($attribute, $value)
     {
         $this->sql = 'select * from '.$this->table.' where '.$attribute.' = ?';
         $this->prepare([$value]);
-        return $this->flush();
+        return $this->getResult();
     }
 
     /*
-    * Pépare et exécute une requête
-    * le paramètre args est un tableau d'arguments pour la requête SQL
+    * Récupère un jeu de résultats
+    * si $all vaut true, tout le tableau est renvoyé
+    * sinon , seul le premier élément du tableau est renvoyé
     */
-    public function prepare(?array $args = null): void
+    private function getResult(bool $all =true): mixed
     {
-        $this->request = $this->connexion->prepare($this->sql);
-        $this->request->execute($args);
-    }
-
-    /*
-    * Récupère un jeu de données (requête select) et 
-    * mappe les résultats sur la classe correspondante à la table
-    */
-    public function flush(): array
-    {
-        return $this->request->fetchAll(\PDO::FETCH_CLASS, $this->model);
+        $result = $this->flush();
+        if ($result) {
+            if ($all === true) {
+                return $result;
+            }
+            return $result[0];            
+        } else {
+            return null;
+        }
     }
 
     /*
@@ -95,12 +94,33 @@ class Repository {
                 $attributes .= '? ,';
             } else {
                 $attributes .= '?';
-            }
-            
+            }    
         }
         // On écrit la requête SQL
         $this->sql = 'insert into '.$this->table.' values ('.$attributes.')';
         // On prépare et exécute la requête d'insertion
+        $this->prepare($values);
+    }
+
+    public function update($entity):void
+    {
+        $columns = $this->showColumn();
+        $values = [];
+        $set = '';
+        $count = count($columns)-1;
+        foreach ($columns as $key=>$column) {
+            // on récupère le nom de la méthode accesseur
+            $getterFunction = 'get'.ucfirst($column);
+            // on récupère la valeur en appelant l'accesseur
+            $values[] = $entity->$getterFunction();
+            if ($key != $count) {
+                $set .= ' '.$column.'= ? ,';
+            } else {
+                $set .= ' '.$column.'= ?';
+            }
+        }
+
+        $this->sql = 'update '.$this->table.' set '.$set.' where id='.$entity->getId();
         $this->prepare($values);
     }
 
@@ -121,4 +141,28 @@ class Repository {
         }
         return $return;
     }
+
+    
+    /*
+    * Pépare et exécute une requête
+    * le paramètre args est un tableau d'arguments pour la requête SQL
+    */
+    public function prepare(?array $args = null): void
+    {
+        $this->request = $this->connexion->prepare($this->sql);
+        if ($args !== null) {
+            $args = PrepareSqlRequest::sanitize($args);
+        }
+        $this->request->execute($args);
+    }
+
+    /*
+    * Récupère un jeu de données (requête select) et 
+    * mappe les résultats sur la classe correspondante à la table
+    */
+    public function flush(): array
+    {
+        return $this->request->fetchAll(\PDO::FETCH_CLASS, $this->model);
+    }
+
 }

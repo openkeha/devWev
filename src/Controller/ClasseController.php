@@ -4,34 +4,29 @@ namespace Keha\Mvc\Controller;
 
 use Keha\Kernel\AbstractController;
 use \Keha\Kernel\Repository;
-use Keha\Mvc\Model\Classe;
-use Keha\Mvc\Model\Notes;
+use Keha\Kernel\Security;
 
 class ClasseController extends AbstractController {
 
     public function index()
     {
-        echo '<pre>';
-            $_SESSION['texte'] = 'bienvenue';
-            var_dump($_SESSION);
-        echo '</pre>';
-        $repository = new Repository('notes');
-        echo '<pre>';
-        var_dump($repository->getAll());
-        echo '</pre>';
-
-        $note = new Notes();
-        $note->setNote(18);
-        $repository->insert($note);
-
+        $security = new Security();
+        if (!$security->isConnected()) {
+            $this->redirect('index.php?controller=connect');
+        }
         $repository = new Repository('classe');
-        echo '<pre>';
-        var_dump($repository->getAll());
-        echo '</pre>';
+        $classeToUpdate = $repository->getById(2);
+        $classeToUpdate->setName("<main>
+    <form method='post' action=''>
+        <input type='text' name='username' value=''>
+        <input type='password' name='password' value=''>
+        <input type='submit' name='submit' value='se connecter'>
+    </form>
+</main>");
+        $repository->update($classeToUpdate);
 
-        $class = new Classe();
-        $class->setName('Trop compliqué la programmation');
-        $repository->insert($class);
+        $classe = $repository->getById(2);
+        echo $classe->getName();
 
     }
 }

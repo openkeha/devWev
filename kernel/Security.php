@@ -13,6 +13,11 @@ class Security
         return false;
     }
 
+    public function disconnect():void 
+    {
+        $_SESSION['connected'] = false;
+    }
+
     public function connect($username, $password):mixed 
     {
         $repository = new Repository('user');

@@ -17,4 +17,8 @@ class AbstractController {
         //echo 'la fonction render d\'AbstractControler permet de cacher la logique de la vue au développeur<br>';
         $this->view->render($template, $vars);
     }
+
+    public function redirect($route) {
+        header('location: '.$route);
+    }
 }
