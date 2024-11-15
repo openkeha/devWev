@@ -9,7 +9,7 @@ class PrepareSqlRequest {
         $return = [];
         foreach($values as $value) {
             if ($value !== NULL && !is_numeric($value)) {
-                $return[] = htmlentities($value);
+                $return[] = htmlspecialchars($value);
             } else {
                 $return[] = $value;
             }
