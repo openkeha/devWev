@@ -4,5 +4,7 @@ include_once('kernel/configuration/Configuration.php');
 use Keha\Kernel\Router;
 
 echo 'index.php appelle le router qui se charge d\'instancier le bon contrôleur en fonction de la query string<br>';
+
+session_start();
 $routeur = new Router;
 $routeur->dispatch();

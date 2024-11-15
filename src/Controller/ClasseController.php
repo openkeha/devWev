@@ -11,6 +11,10 @@ class ClasseController extends AbstractController {
 
     public function index()
     {
+        echo '<pre>';
+            $_SESSION['texte'] = 'bienvenue';
+            var_dump($_SESSION);
+        echo '</pre>';
         $repository = new Repository('notes');
         echo '<pre>';
         var_dump($repository->getAll());

@@ -44,6 +44,13 @@ class Repository {
         return $this->flush();
     }
 
+    public function getByAttribute($attribute, $value)
+    {
+        $this->sql = 'select * from '.$this->table.' where '.$attribute.' = ?';
+        $this->prepare([$value]);
+        return $this->flush();
+    }
+
     /*
     * Pépare et exécute une requête
     * le paramètre args est un tableau d'arguments pour la requête SQL
