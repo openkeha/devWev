@@ -12,9 +12,9 @@ class View {
         *echo 'je charge le fichier template qui va s\'afficher';
         */
         extract($values);
-        include_once('./Templates/Template/head.php');
-        include_once('./Templates/Template/header.php');
-        include_once('./Templates/'.$template);
-        include_once('./Templates/Template/footer.php');        
+        include_once('../Templates/Template/head.php');
+        include_once('../Templates/Template/header.php');
+        include_once('../Templates/'.$template);
+        include_once('../Templates/Template/footer.php');        
     }
 }
