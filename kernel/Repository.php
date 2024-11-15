@@ -82,14 +82,14 @@ class Repository {
     public function insert($entity):void {
         //Récupère les noms des colonnes de la table qui correspond à l'entité
         $columns = $this->showColumn();
-        $getter = [];
+        $values = [];
         $attributes = '';
         $count = count($columns)-1;
         foreach ( $columns as $key=>$column) {
             //on crée dynamiquement le getter pour la proprité de la classe
             $getterFunction = 'get'.ucfirst($column);
             // On inèsre dans le tableau getter la valeur pour la proprité de l'objet entity
-            $getter[] = $entity->$getterFunction();
+            $values[] = $entity->$getterFunction();
             // On gère les attributs pour la requête préparée
             if ($key != $count) {
                 $attributes .= '? ,';
@@ -101,7 +101,7 @@ class Repository {
         // On écrit la requête SQL
         $this->sql = 'insert into '.$this->table.' values ('.$attributes.')';
         // On prépare et exécute la requête d'insertion
-        $this->prepare($getter);
+        $this->prepare($values);
     }
 
 
@@ -115,6 +115,7 @@ class Repository {
         $this->prepare();
         $columns = $this->request->fetchAll();
         $return = [];
+        //Récupère le nom de la colonne
         foreach ($columns as $column) {
             $return[] = $column[0];
         }
