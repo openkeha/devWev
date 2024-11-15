@@ -44,6 +44,10 @@ class Repository {
         return $this->flush();
     }
 
+    /*
+    * Récupère les enregistrements en fonction des paramètres passés en arguments
+    *
+    */
     public function getByAttribute($attribute, $value)
     {
         $this->sql = 'select * from '.$this->table.' where '.$attribute.' = ?';
