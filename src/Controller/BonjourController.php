@@ -14,4 +14,11 @@ class BonjourController extends AbstractController {
             'texte' => 'Vous commencez à comprendre que le développement est difficile!!!!'
         ]);
     }
+
+    public function Bonsoir()
+    {
+        $this->render('index.php',[
+            'var'=>'méthode Bonsoir'
+        ]);
+    }
 }

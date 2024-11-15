@@ -20,12 +20,17 @@ class Router {
         */
         
         $controllerName = $_ENV['controller'].'indexcontroller';
+        $methodName = 'index';
         $controller = new $controllerName;
 
         if (isset($_GET['controller']) && class_exists($_ENV['controller'].$_GET['controller'].'controller')) {
             $controllerName = $_ENV['controller'].$_GET['controller'].'controller';
             $controller = new $controllerName();
         } 
-        $controller->index();
+
+        if (isset($_GET['method']) && method_exists($controllerName, $_GET['method'])) {
+            $methodName = $_GET['method'];
+        }
+        $controller->$methodName();
     }
 }
